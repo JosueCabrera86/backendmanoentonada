@@ -14,8 +14,8 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 CORS(
     app,
     resources={r"/*": {"origins": [
-        "https://losdealla.com",
-        "https://www.losdealla.com",
+        "https://manoentonada.com",
+        "https://www.manoentonada.com",
         "http://localhost:5173"
     ]}},
     supports_credentials=True
@@ -255,7 +255,7 @@ def edit_user(current_user):
 
     # ------------------ 2️⃣ UPDATE PERFIL ------------------
     updates = {}
-    for field in ["name", "rol", "categoria", "disciplina"]:
+    for field in ["name", "rol", "categoria"]:
         if field in data:
             updates[field] = data[field]
 
