@@ -16,7 +16,7 @@ CORS(
     resources={r"/*": {"origins": [
         "https://manoentonada.com",
         "https://www.manoentonada.com",
-        "manoentonada.vercel.app"
+        "manoentonada.vercel.app",
         "http://localhost:5173"
     ]}},
     supports_credentials=True
