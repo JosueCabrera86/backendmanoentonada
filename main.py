@@ -104,7 +104,7 @@ def token_required(required_rol=None):
 @token_required(required_rol="admin")
 def get_users(current_user):
     try:
-        url = f"{SUPABASE_URL}/rest/v1/users?select=id,auth_id,name,email,rol,categoria,disciplina"
+        url = f"{SUPABASE_URL}/rest/v1/users?select=id,auth_id,name,email,rol,categoria"
 
         headers = {
             "apikey": SUPABASE_SERVICE_KEY,
