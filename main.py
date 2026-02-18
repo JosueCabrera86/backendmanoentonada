@@ -304,6 +304,57 @@ def edit_multiple_users(current_user):
     return jsonify({"message": "Usuarios actualizados"}), 200
 
 
+@app.route("/users/multiple", methods=["DELETE"])
+@token_required(required_rol="admin")
+def delete_multiple_users(current_user):
+    try:
+        data = request.get_json()
+        ids = data.get("ids", [])
+
+        if not ids or not isinstance(ids, list):
+            return jsonify({"error": "Lista de IDs requerida"}), 400
+
+        headers = {
+            "apikey": SUPABASE_SERVICE_KEY,
+            "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+        }
+
+        for user_id in ids:
+            # 1️⃣ Borrar perfil en tabla public.users
+            resp = requests.delete(
+                f"{SUPABASE_URL}/rest/v1/users?auth_id=eq.{user_id}",
+                headers=headers,
+            )
+
+            if resp.status_code not in (200, 204):
+                return jsonify({
+                    "error": "Error borrando usuario en base",
+                    "details": resp.text
+                }), resp.status_code
+
+            # 2️⃣ Borrar usuario en Auth
+            delete_auth = requests.delete(
+                f"{SUPABASE_URL}/auth/v1/admin/users/{user_id}",
+                headers=headers,
+            )
+
+            if delete_auth.status_code not in (200, 204):
+                return jsonify({
+                    "error": "Error borrando usuario en auth",
+                    "details": delete_auth.text
+                }), delete_auth.status_code
+
+        return jsonify({
+            "message": "Usuarios eliminados correctamente"
+        }), 200
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "error": "Error interno",
+            "details": str(e)
+        }), 500
 
 @app.route("/users/<user_id>", methods=["DELETE"])
 @token_required(required_rol="admin")
