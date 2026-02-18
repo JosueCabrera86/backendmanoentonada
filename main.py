@@ -17,7 +17,9 @@ CORS(
         "https://manoentonada.com",
         "https://www.manoentonada.com",
         "manoentonada.vercel.app",
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://manoentonada.vercel.app",
+
     ]}},
     supports_credentials=True
 )
